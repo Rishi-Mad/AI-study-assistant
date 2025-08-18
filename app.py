@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import re
-from collections import Counter
+from typing import List
+from transformers import pipeline
 
 app = Flask(__name__)
 CORS(app)  # allow requests from Vite
@@ -14,60 +15,90 @@ def home():
 def health():
     return {"status": "ok"}
 
+SUMM_MODEL = "t5-small"
+try:
+    summarizer = pipeline(
+        "summarization",
+        model=SUMM_MODEL,
+        tokenizer=SUMM_MODEL,
+        framework="pt",   # use PyTorch
+        device=-1         # -1 = CPU
+    )
+except Exception as e:
+    summarizer = None
+    print("Failed to load summarizer:", e)
 
-def simple_summarize(text: str, ratio: float = 0.25, max_sentences: int | None = None) -> str:
-    """
-    Extractive summary:
-      1) split into sentences
-      2) score sentences by word frequency (stopwords down-weighted)
-      3) return top N sentences in original order
-    """
-    if not text or not text.strip():
-        return ""
-
+def split_into_chunks(text: str, max_chars: int = 1200) -> List[str]:
     sentences = re.split(r'(?<=[.!?])\s+', text.strip())
-    if len(sentences) <= 2:
-        return text 
+    chunks, cur = [], ""
+    for s in sentences:
+        # start new chunk if adding this sentence would exceed size
+        if len(cur) + len(s) + 1 > max_chars:
+            if cur:
+                chunks.append(cur.strip())
+            cur = s
+        else:
+            cur = (cur + " " + s).strip() if cur else s
+    if cur:
+        chunks.append(cur.strip())
+    return chunks
 
-    words = re.findall(r"[A-Za-z']+", text.lower())
-    stop = {
-        "the","a","an","and","or","but","if","then","when","so","of","to","in","on","for","with","at","by",
-        "from","as","is","are","was","were","be","been","being","it","that","this","these","those","i","you",
-        "he","she","we","they","them","his","her","their","our","your","my","me"
-    }
-    freq = Counter(w for w in words if w not in stop)
-    if not freq:
-        return sentences[0]
+def ml_summarize(text: str, min_len: int = 40, max_len: int = 140) -> str:
+    if not summarizer:
+        raise RuntimeError("Summarizer model not loaded")
+    text = text.strip()
+    if not text:
+        return ""
+    
+    # chunk long text, summarize each, then (optionally) summarize the summaries
+    chunks = split_into_chunks(text, max_chars=1200)
+    partials = []
+    for ch in chunks:
+        out = summarizer(
+            ch,
+            min_length=min_len,
+            max_length=max_len,
+            do_sample=False
+        )[0]["summary_text"]
+        partials.append(out)
 
-    def score(sent: str) -> int:
-        tokens = re.findall(r"[A-Za-z']+", sent.lower())
-        return sum(freq.get(t, 0) for t in tokens)
+    combined = " ".join(partials)
 
-    scored = [(idx, s, score(s)) for idx, s in enumerate(sentences)]
+    # If many chunks, do a second pass to compress combined text
+    if len(partials) > 1 and len(combined) > 1200:
+        combined = summarizer(
+            combined,
+            min_length=min_len,
+            max_length=max_len,
+            do_sample=False
+        )[0]["summary_text"]
 
-    n = max(1, int(len(sentences) * ratio)) if max_sentences is None else max_sentences
-    n = min(n, len(sentences))
-
-    top = sorted(sorted(scored, key=lambda x: x[2], reverse=True)[:n], key=lambda x: x[0])
-    return " ".join(s for _, s, _ in top)
+    return combined
 
 @app.post("/summarize")
 def summarize():
     data = request.get_json(silent=True) or {}
     text = (data.get("text") or "").strip()
-    ratio = data.get("ratio", 0.25)
+    min_len = int(data.get("min_length", 40))
+    max_len = int(data.get("max_length", 140))
 
-    try:
-        ratio = float(ratio)
-    except Exception:
-        return jsonify({"error": "ratio must be a number"}), 400
     if not text:
         return jsonify({"error": "Missing 'text'"}), 400
-    if not (0.05 <= ratio <= 0.9):
-        return jsonify({"error": "ratio must be between 0.05 and 0.9"}), 400
+    if max_len <= min_len:
+        return jsonify({"error": "max_length must be > min_length"}), 400
 
-    summary = simple_summarize(text, ratio=ratio)
-    return jsonify({"summary": summary})
+    try:
+        summary = ml_summarize(text, min_len=min_len, max_len=max_len)
+        return jsonify({
+            "model": SUMM_MODEL,
+            "summary": summary
+        })
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        # log and return a clean error to client
+        print("Summarization error:", e)
+        return jsonify({"error": "Summarization failed"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
