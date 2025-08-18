@@ -3,6 +3,8 @@ from flask_cors import CORS
 from services.summarizer import summarize_t5
 from services.flashcards import extract_flashcards
 from services.quiz import build_quiz
+from services.keywords import extract_keywords
+from services.paraphrase import paraphrase
 
 app = Flask(__name__)
 CORS(app)
@@ -62,6 +64,37 @@ def quiz():
     questions = build_quiz(text, max_qs=max_qs)
     return jsonify({"count": len(questions), "quiz": questions})
 
+@app.post("/keywords")
+def keywords():
+    data = request.get_json(silent=True) or {}
+    text = (data.get("text") or "").strip()
+    top_k = int(data.get("top_k", 10))
+
+    if not text:
+        return jsonify({"error": "Missing 'text'"}), 400
+    if not (1 <= top_k <= 50):
+        return jsonify({"error": "top_k must be between 1 and 50"}), 400
+
+    kws = extract_keywords(text, top_k=top_k)
+    return jsonify({"count": len(kws), "keywords": kws})
+
+@app.post("/paraphrase")
+def paraphrase_route():
+    data = request.get_json(silent=True) or {}
+    text = (data.get("text") or "").strip()
+    max_len = int(data.get("max_length", 128))
+
+    if not text:
+        return jsonify({"error": "Missing 'text'"}), 400
+    if not (16 <= max_len <= 512):
+        return jsonify({"error": "max_length must be between 16 and 512"}), 400
+
+    try:
+        out = paraphrase(text, max_len=max_len)
+        return jsonify({"model": "t5-small", "paraphrase": out})
+    except Exception as e:
+        print("Paraphrase error:", e)
+        return jsonify({"error": "Paraphrasing failed"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
