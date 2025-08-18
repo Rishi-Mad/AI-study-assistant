@@ -36,8 +36,10 @@ Designed to help students learn smarter, and to demonstrate practical **AI + API
    source venv/bin/activate
 
 2. **Install dependencies**
+    ```bash
     pip install -r requirements.txt
 
 3. **Run the API**
+    ```bash
     python app.py
 
