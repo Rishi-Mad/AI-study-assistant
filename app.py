@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from services.summarizer import summarize_t5
 from services.flashcards import extract_flashcards
+from services.quiz import build_quiz
 
 app = Flask(__name__)
 CORS(app)
@@ -46,6 +47,21 @@ def flashcards():
 
     cards = extract_flashcards(text, max_cards=max_cards)
     return jsonify({"count": len(cards), "cards": cards})
+
+@app.post("/quiz")
+def quiz():
+    data = request.get_json(silent=True) or {}
+    text = (data.get("text") or "").strip()
+    max_qs = int(data.get("max_qs", 5))
+
+    if not text:
+        return jsonify({"error": "Missing 'text'"}), 400
+    if not (1 <= max_qs <= 20):
+        return jsonify({"error": "max_qs must be between 1 and 20"}), 400
+
+    questions = build_quiz(text, max_qs=max_qs)
+    return jsonify({"count": len(questions), "quiz": questions})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -23,26 +23,36 @@ def _clean_defn(defn: str) -> str:
 def extract_flashcards(text: str, max_cards: int = 12) -> List[Dict[str, str]]:
     cards: List[Dict[str, str]] = []
     seen = set()
+
     for s in sentences(text):
         s_clean = normalize_space(s)
         for pat in _DEF_PATTERNS:
             m = re.match(pat, s_clean, flags=re.IGNORECASE)
-            if not m: 
+            if not m:
                 continue
+
             term = _clean_term(m.group(1))
             ans  = _clean_defn(m.group(2))
-            if len(term) < 2 or len(ans) < 5 or len(term.split()) > 8:
+
+            if len(term) < 2 or len(ans) < 5:
                 continue
+            if len(term.split()) > 8:
+                continue
+
             key = term.lower()
-            if key in seen: 
+            if key in seen:
                 break
             seen.add(key)
+
+            q_word = "are" if re.search(r"\b(are)\b", s_clean, re.I) else "is"
             cards.append({
                 "term": term,
-                "question": f"What is {term}?",
+                "question": f"What {q_word} {term}?",
                 "answer": ans
             })
             break
+
         if len(cards) >= max_cards:
             break
+
     return cards
