@@ -130,7 +130,6 @@ class VisualQAService:
         """Extract text using OCR with multiple configurations"""
         text_results = []
         
-        # Standard OCR configuration
         try:
             config1 = '--oem 3 --psm 6'
             text1 = pytesseract.image_to_string(image, config=config1)
@@ -138,7 +137,6 @@ class VisualQAService:
         except:
             pass
         
-        # Math-optimized OCR configuration
         try:
             config2 = '--oem 3 --psm 8 -c tessedit_char_whitelist=0123456789+-*/=()[]{}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,√∫∑∂∞≤≥≠±'
             text2 = pytesseract.image_to_string(image, config=config2)
@@ -146,7 +144,6 @@ class VisualQAService:
         except:
             pass
         
-        # Single block OCR
         try:
             config3 = '--oem 3 --psm 7'
             text3 = pytesseract.image_to_string(image, config=config3)
@@ -154,7 +151,6 @@ class VisualQAService:
         except:
             pass
         
-        # Choose best result (longest non-empty text)
         best_text = max(text_results, key=len, default="")
         return best_text.strip()
     
@@ -204,14 +200,12 @@ class VisualQAService:
     
     def _process_general_question(self, image: Image.Image, question: str, extracted_text: str) -> Dict:
         """Process general questions about images"""
-        
-        # Try VQA model first
+
         if self.vqa_model and self.vqa_processor:
             vqa_answer = self._get_vqa_answer(image, question)
             if vqa_answer["confidence"] > 0.3:
                 return vqa_answer
         
-        # Fall back to text-based analysis
         return self._text_based_analysis(question, extracted_text)
     
     def _attempt_math_solution(self, math_expressions: List[Dict], question: str) -> Optional[Dict]:
@@ -220,11 +214,9 @@ class VisualQAService:
             return None
         
         try:
-            # Get the highest confidence expression
             best_expr = math_expressions[0]
             expr_text = best_expr["expression"]
             
-            # Clean and prepare expression for SymPy
             cleaned_expr = self._clean_math_expression(expr_text)
             
             if best_expr["type"] == "equation":
@@ -241,23 +233,19 @@ class VisualQAService:
             return None
     
     def _solve_equation(self, equation: str, question: str) -> Dict:
-        """Solve algebraic equations"""
         try:
-            # Parse equation
             if '=' in equation:
                 left, right = equation.split('=', 1)
                 expr = f"Eq({left.strip()}, {right.strip()})"
             else:
                 expr = equation
             
-            # Determine variable to solve for
             variables = re.findall(r'[a-zA-Z]', equation)
             if not variables:
                 return {"solution": "No variables found to solve for", "confidence": 0.2}
             
-            var = max(set(variables), key=variables.count)  # Most common variable
+            var = max(set(variables), key=variables.count)
             
-            # Solve using SymPy
             x = sp.Symbol(var)
             eq = sp.sympify(expr.replace(var, 'x'))
             solutions = sp.solve(eq, x)
@@ -287,7 +275,6 @@ class VisualQAService:
     def _solve_derivative(self, expression: str) -> Dict:
         """Solve derivative problems"""
         try:
-            # Extract function and variable
             match = re.search(r'd([^/]+)/d([a-zA-Z])', expression)
             if not match:
                 return {"solution": "Could not parse derivative", "confidence": 0.2}
@@ -315,7 +302,6 @@ class VisualQAService:
     def _solve_integral(self, expression: str) -> Dict:
         """Solve integral problems"""
         try:
-            # Basic integral parsing (this would need more sophisticated parsing in practice)
             integrand_match = re.search(r'∫([^d]+)d([a-zA-Z])', expression)
             if not integrand_match:
                 return {"solution": "Could not parse integral", "confidence": 0.2}
@@ -343,7 +329,6 @@ class VisualQAService:
     def _evaluate_expression(self, expression: str) -> Dict:
         """Evaluate mathematical expressions"""
         try:
-            # Clean and evaluate
             result = sp.sympify(expression)
             simplified = sp.simplify(result)
             
@@ -362,12 +347,11 @@ class VisualQAService:
     
     def _clean_math_expression(self, expression: str) -> str:
         """Clean mathematical expression for parsing"""
-        # Replace common OCR mistakes
         replacements = {
             '×': '*',
             '÷': '/',
             '−': '-',
-            '±': '+-',  # This needs special handling
+            '±': '+-',
             '²': '**2',
             '³': '**3',
         }
@@ -375,8 +359,7 @@ class VisualQAService:
         cleaned = expression
         for old, new in replacements.items():
             cleaned = cleaned.replace(old, new)
-        
-        # Remove extra spaces
+
         cleaned = re.sub(r'\s+', ' ', cleaned).strip()
         
         return cleaned
@@ -391,7 +374,6 @@ class VisualQAService:
             
             answer = self.vqa_processor.decode(outputs[0], skip_special_tokens=True)
             
-            # Calculate confidence based on answer length and content
             confidence = min(0.9, len(answer.split()) / 10 + 0.3)
             
             return {
@@ -408,12 +390,10 @@ class VisualQAService:
                                  math_expressions: List[Dict], subject: str) -> Dict:
         """Rule-based analysis for STEM questions"""
         
-        # Analyze question intent
         question_lower = question.lower()
         
         if any(word in question_lower for word in ['solve', 'find', 'calculate', 'what is']):
             if math_expressions:
-                # Try to provide guidance on solving
                 expr = math_expressions[0]
                 guidance = self._get_solving_guidance(expr, subject)
                 return {
@@ -423,7 +403,6 @@ class VisualQAService:
                     "detected_expression": expr["expression"]
                 }
         
-        # Default response with extracted information
         response = f"I can see this text in the image: {extracted_text[:200]}..."
         if math_expressions:
             response += f"\n\nMathematical expressions detected: {', '.join([e['expression'] for e in math_expressions[:3]])}"
@@ -442,7 +421,6 @@ class VisualQAService:
                 "confidence": 0.1
             }
         
-        # Simple keyword matching
         question_words = set(question.lower().split())
         text_words = set(extracted_text.lower().split())
         
