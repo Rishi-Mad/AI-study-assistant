@@ -18,7 +18,6 @@ class VisualQAService:
     def __init__(self):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         
-        # Initialize VQA model (BLIP for visual question answering)
         try:
             self.vqa_processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
             self.vqa_model = BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base").to(self.device)
@@ -83,10 +82,9 @@ class VisualQAService:
             else:
                 result = self._process_general_question(image, question, extracted_text)
             
-            # Add metadata
             result.update({
-                "extracted_text": extracted_text[:500],  # Limit text length
-                "detected_expressions": math_expressions[:5],  # Limit expressions
+                "extracted_text": extracted_text[:500],
+                "detected_expressions": math_expressions[:5],
                 "subject": subject,
                 "processing_info": {
                     "ocr_confidence": self._calculate_ocr_confidence(extracted_text),
@@ -105,12 +103,9 @@ class VisualQAService:
             }
     
     def _enhance_image_for_ocr(self, image: Image.Image) -> Image.Image:
-        """Enhance image quality for better OCR results"""
-        # Convert to grayscale if needed
         if image.mode != 'L':
             image = image.convert('L')
         
-        # Resize if too small
         width, height = image.size
         if width < 800 or height < 600:
             scale_factor = max(800/width, 600/height)
@@ -126,7 +121,6 @@ class VisualQAService:
         enhancer = ImageEnhance.Sharpness(image)
         image = enhancer.enhance(2.0)
         
-        # Apply slight blur to reduce noise, then sharpen
         image = image.filter(ImageFilter.GaussianBlur(radius=0.5))
         image = image.filter(ImageFilter.UnsharpMask())
         
