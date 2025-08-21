@@ -509,7 +509,6 @@ class EnhancedQuizService:
             }
         }
 
-# Function to maintain backward compatibility with existing code
 def build_quiz(text: str, max_qs: int = 5) -> List[Dict]:
     """Backward compatible quiz building function"""
     quiz_service = EnhancedQuizService()

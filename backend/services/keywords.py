@@ -54,4 +54,5 @@ def extract_keywords(text: str, top_k: int = 10) -> List[Dict[str, float]]:
         m = ranked[0][1]
         ranked = [(k, v / m if m > 0 else 0.0) for k, v in ranked]
 
+
     return [{"keyword": k, "score": round(v, 3)} for k, v in ranked]

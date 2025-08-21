@@ -113,8 +113,6 @@ def extract_flashcards(text: str, max_cards: int = 12, quality_threshold: float 
     
     # Get key concepts for additional flashcard generation
     key_concepts = _extract_key_concepts(text)
-    
-    # Process sentences for pattern-based extraction
     text_sentences = sentences(text)
     for i, s in enumerate(text_sentences):
         s_clean = normalize_space(s)
