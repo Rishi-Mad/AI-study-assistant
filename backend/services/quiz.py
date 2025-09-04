@@ -1,8 +1,7 @@
 import random
-import re
-from typing import List, Dict, Set, Tuple
+from typing import List, Dict, Set
 from services.flashcards import extract_flashcards
-from utils.text import sentences, normalize_space
+from utils.text import sentences
 import hashlib
 
 class EnhancedQuizService:
@@ -94,8 +93,8 @@ class EnhancedQuizService:
                                    full_text: str) -> Dict:
         """Generate a question of specific type"""
         
-        term = card["term"]
-        correct_answer = card["answer"]
+        # term = card["term"]  # TODO: Use term for question generation
+        # correct_answer = card["answer"]  # TODO: Use correct_answer for validation
         
         if question_type == "definition":
             return self._create_definition_question(card, difficulty_level, all_cards)

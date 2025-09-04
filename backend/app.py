@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from datetime import datetime, timedelta
+from datetime import datetime
 import sqlite3
-import json
 import uuid
-from typing import Dict, List, Optional
 
 from services.summarizer import summarize_t5
 from services.flashcards import extract_flashcards

@@ -1,16 +1,10 @@
-import cv2
-import numpy as np
 import pytesseract
 import re
-import base64
 from PIL import Image, ImageEnhance, ImageFilter
-from typing import Dict, List, Optional, Tuple
-import io
-from transformers import pipeline, BlipProcessor, BlipForQuestionAnswering
+from typing import Dict, List, Optional
+from transformers import BlipProcessor, BlipForQuestionAnswering
 import torch
 import sympy as sp
-from sympy.parsing.latex import parse_latex
-import requests
 
 class VisualQAService:
     """Visual Question Answering service for math and science problems"""
@@ -134,21 +128,21 @@ class VisualQAService:
             config1 = '--oem 3 --psm 6'
             text1 = pytesseract.image_to_string(image, config=config1)
             text_results.append(text1)
-        except:
+        except Exception:
             pass
         
         try:
             config2 = '--oem 3 --psm 8 -c tessedit_char_whitelist=0123456789+-*/=()[]{}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,√∫∑∂∞≤≥≠±'
             text2 = pytesseract.image_to_string(image, config=config2)
             text_results.append(text2)
-        except:
+        except Exception:
             pass
         
         try:
             config3 = '--oem 3 --psm 7'
             text3 = pytesseract.image_to_string(image, config=config3)
             text_results.append(text3)
-        except:
+        except Exception:
             pass
         
         best_text = max(text_results, key=len, default="")

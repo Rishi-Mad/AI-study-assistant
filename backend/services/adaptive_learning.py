@@ -1,9 +1,7 @@
 import sqlite3
-import json
 import random
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
-import math
 
 class AdaptiveLearningEngine:
     

@@ -2,7 +2,6 @@ import re
 from typing import List, Dict, Set, Tuple
 from utils.text import sentences, normalize_space
 import spacy
-from collections import Counter
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -112,7 +111,7 @@ def extract_flashcards(text: str, max_cards: int = 12, quality_threshold: float 
     seen = set()
     
     # Get key concepts for additional flashcard generation
-    key_concepts = _extract_key_concepts(text)
+    # key_concepts = _extract_key_concepts(text)  # TODO: Implement key concepts usage
     text_sentences = sentences(text)
     for i, s in enumerate(text_sentences):
         s_clean = normalize_space(s)
@@ -160,7 +159,7 @@ def extract_flashcards(text: str, max_cards: int = 12, quality_threshold: float 
 def generate_concept_cards(text: str, concepts: Set[str], max_cards: int = 5) -> List[Dict[str, str]]:
     """Generate additional flashcards for key concepts found in text"""
     cards = []
-    text_lower = text.lower()
+    # text_lower = text.lower()  # TODO: Use text_lower for case-insensitive operations
     
     for concept in list(concepts)[:max_cards]:
         concept_sentences = []
