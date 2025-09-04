@@ -16,10 +16,10 @@ export type SummarizeResp = {
 
 export type Flashcard = {
   term: string;
-  question: string;
-  answer: string;
-  quality_score?: number;
-  difficulty_level?: number;
+  definition: string;
+  type: string;
+  difficulty: number;
+  quality_score: number;
 };
 
 export type FlashcardsResp = {
@@ -33,14 +33,15 @@ export type FlashcardsResp = {
 
 export type QuizItem = {
   question: string;
-  choices: string[];
-  answer: string;
-  term: string;
+  options: string[];
+  correct_answer: string;
+  explanation: string;
+  difficulty: number;
 };
 
 export type QuizResp = {
   count: number;
-  quiz: QuizItem[];
+  questions: QuizItem[];
   metadata?: {
     difficulty_level: string;
   };
@@ -53,10 +54,18 @@ export type KeywordItem = {
 
 export type KeywordsResp = {
   count: number;
-  keywords: KeywordItem[];
+  keywords: string[];
+  metadata?: {
+    session_id?: string;
+    extraction_method?: string;
+  };
 };
 
 export type ParaphraseResp = {
-  model: string;
   paraphrase: string;
+  metadata: {
+    model: string;
+    length_change: number;
+    session_id?: string;
+  };
 };

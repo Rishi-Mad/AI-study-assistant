@@ -78,7 +78,7 @@ export default function VisualQA({ onResult }: VisualQAProps) {
       formData.append('question', question);
       formData.append('subject', subject);
 
-      const response = await fetch('/visual-qa', {
+      const response = await fetch('/api/v1/visual-qa', {
         method: 'POST',
         body: formData,
       });

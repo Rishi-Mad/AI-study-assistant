@@ -8,7 +8,7 @@ export class HttpError extends Error {
   }
 }
 
-const BASE_URL = (import.meta.env.VITE_API_URL || "http://127.0.0.1:5000").replace(/\/$/, "");
+const BASE_URL = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
 
 type FetchJSONOptions = {
   timeoutMs?: number;

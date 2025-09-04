@@ -1,0 +1,17 @@
+# Hugging Face Spaces configuration
+title: AI Study Assistant
+emoji: 🧠
+colorFrom: purple
+colorTo: blue
+sdk: docker
+pinned: false
+license: mit
+short_description: AI-powered study assistant with summarization, flashcards, quizzes, and adaptive learning
+tags:
+  - ai
+  - education
+  - nlp
+  - machine-learning
+  - study-assistant
+  - fastapi
+  - transformers

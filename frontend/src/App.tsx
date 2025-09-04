@@ -313,8 +313,8 @@ export default function App() {
                       {fcOut.cards.map((card, i) => (
                         <div key={i} className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors">
                           <div className="text-xs text-white/60 mb-2">{card.term}</div>
-                          <div className="font-medium text-white mb-2">{card.question}</div>
-                          <div className="text-green-300 text-sm">{card.answer}</div>
+                          <div className="font-medium text-white mb-2">{card.definition}</div>
+                          <div className="text-xs text-white/60">Type: {card.type} • Difficulty: {card.difficulty}/5</div>
                         </div>
                       ))}
                     </div>
@@ -352,18 +352,21 @@ export default function App() {
                       <span>{quizOut.count} questions generated</span>
                     </div>
                     <div className="space-y-4 max-h-96 overflow-y-auto">
-                      {quizOut.quiz.map((question, i) => (
+                      {quizOut.questions.map((question, i) => (
                         <div key={i} className="p-4 bg-white/5 rounded-lg border border-white/10">
                           <div className="font-medium text-white mb-3">{question.question}</div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
-                            {question.choices.map((choice, j) => (
+                            {question.options.map((option, j) => (
                               <div key={j} className="p-2 bg-white/5 rounded border border-white/10 text-sm">
-                                {choice}
+                                {option}
                               </div>
                             ))}
                           </div>
                           <div className="text-green-300 text-sm">
-                            <strong>Answer:</strong> {question.answer}
+                            <strong>Answer:</strong> {question.correct_answer}
+                          </div>
+                          <div className="text-blue-300 text-sm mt-2">
+                            <strong>Explanation:</strong> {question.explanation}
                           </div>
                         </div>
                       ))}
@@ -384,8 +387,7 @@ export default function App() {
                           key={i} 
                           className="px-3 py-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 rounded-full text-sm text-white"
                         >
-                          {keyword.keyword}
-                          <span className="text-orange-300 ml-1">({keyword.score.toFixed(2)})</span>
+                          {keyword}
                         </span>
                       ))}
                     </div>
@@ -397,7 +399,7 @@ export default function App() {
                   <div className="space-y-4 animate-fade-in">
                     <div className="flex items-center space-x-2 text-sm text-white/60">
                       <CheckCircle className="h-4 w-4 text-green-400" />
-                      <span>Model: {paraOut.model}</span>
+                      <span>Model: {paraOut.metadata.model}</span>
                     </div>
                     <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                       <p className="text-white leading-relaxed">{paraOut.paraphrase}</p>

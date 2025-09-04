@@ -44,7 +44,7 @@ export default function FlashcardReview({ cards, onReviewComplete }: FlashcardRe
     if (!userAnswer.trim()) return;
 
     const responseTime = (Date.now() - startTime) / 1000;
-    const correct = userAnswer.toLowerCase().trim() === currentCard.answer.toLowerCase().trim();
+    const correct = userAnswer.toLowerCase().trim() === currentCard.definition.toLowerCase().trim();
     
     setIsCorrect(correct);
     setShowResult(true);
@@ -124,7 +124,7 @@ export default function FlashcardReview({ cards, onReviewComplete }: FlashcardRe
             <div className="h-full flex flex-col justify-center items-center text-center p-6">
               <div className="text-xs text-white/60 mb-2">{currentCard.term}</div>
               <h3 className="text-lg font-semibold text-white mb-4">
-                {currentCard.question}
+                {currentCard.definition}
               </h3>
               <div className="text-sm text-white/60">
                 Click to reveal answer
@@ -197,7 +197,7 @@ export default function FlashcardReview({ cards, onReviewComplete }: FlashcardRe
             </div>
             {!isCorrect && (
               <div className="text-sm text-green-300 mt-1">
-                Correct answer: "{currentCard.answer}"
+                Correct answer: "{currentCard.definition}"
               </div>
             )}
           </div>
