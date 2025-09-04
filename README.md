@@ -276,18 +276,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support
-
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/yourusername/ai-study-assistant/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-study-assistant/discussions)
-- **📧 Email**: your.email@example.com
-
----
-
-<div align="center">
-
-**⭐ Star this repository if you found it helpful!**
-
-Made with ❤️ by [Your Name](https://github.com/yourusername)
-
 </div>
