@@ -1,0 +1,194 @@
+# AI Study Assistant - Git Ignore File
+
+# ===========================================
+# SENSITIVE FILES - NEVER COMMIT THESE
+# ===========================================
+
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# API Keys and credentials
+config.json
+secrets.json
+credentials.json
+api_keys.txt
+
+# Database files (contains user data)
+*.db
+*.sqlite
+*.sqlite3
+study_assistant.db
+
+# ===========================================
+# BACKEND - PYTHON
+# ===========================================
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Flask
+instance/
+.webassets-cache
+
+# ===========================================
+# FRONTEND - NODE.JS
+# ===========================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+dist/
+build/
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# ===========================================
+# DEVELOPMENT TOOLS
+# ===========================================
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# ===========================================
+# AI/ML SPECIFIC
+# ===========================================
+
+# Model files (too large for git)
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+models/
+checkpoints/
+
+# Data files
+data/
+datasets/
+*.csv
+*.json.gz
+*.parquet
+
+# ===========================================
+# DEPLOYMENT
+# ===========================================
+
+# Docker
+.dockerignore
+Dockerfile.local
+
+# Deployment configs
+docker-compose.override.yml
+.vercel/
+.netlify/
+
+# ===========================================
+# DOCUMENTATION (Optional - uncomment if you want to keep docs private)
+# ===========================================
+
+# Uncomment these if you want to keep documentation private
+# docs/
+# *.md
+# README.md
+# DEPLOYMENT.md
+# IMPROVEMENTS_SUMMARY.md
