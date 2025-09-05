@@ -41,22 +41,6 @@
 
 ---
 
-## 🖼️ Screenshots
-
-<div align="center">
-
-| Dashboard | Flashcard Review | Visual QA |
-|-----------|------------------|-----------|
-| ![Dashboard](https://via.placeholder.com/400x250/1e293b/ffffff?text=Modern+Dashboard) | ![Flashcards](https://via.placeholder.com/400x250/1e293b/ffffff?text=Interactive+Flashcards) | ![Visual QA](https://via.placeholder.com/400x250/1e293b/ffffff?text=Visual+Question+Answering) |
-
-| Analytics | Study Modes | Mobile View |
-|-----------|-------------|-------------|
-| ![Analytics](https://via.placeholder.com/400x250/1e293b/ffffff?text=Learning+Analytics) | ![Study Modes](https://via.placeholder.com/400x250/1e293b/ffffff?text=Study+Modes) | ![Mobile](https://via.placeholder.com/400x250/1e293b/ffffff?text=Mobile+Responsive) |
-
-</div>
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
