@@ -41,22 +41,6 @@
 
 ---
 
-## 🖼️ Screenshots
-
-<div align="center">
-
-| Dashboard | Flashcard Review | Visual QA |
-|-----------|------------------|-----------|
-| ![Dashboard](https://via.placeholder.com/400x250/1e293b/ffffff?text=Modern+Dashboard) | ![Flashcards](https://via.placeholder.com/400x250/1e293b/ffffff?text=Interactive+Flashcards) | ![Visual QA](https://via.placeholder.com/400x250/1e293b/ffffff?text=Visual+Question+Answering) |
-
-| Analytics | Study Modes | Mobile View |
-|-----------|-------------|-------------|
-| ![Analytics](https://via.placeholder.com/400x250/1e293b/ffffff?text=Learning+Analytics) | ![Study Modes](https://via.placeholder.com/400x250/1e293b/ffffff?text=Study+Modes) | ![Mobile](https://via.placeholder.com/400x250/1e293b/ffffff?text=Mobile+Responsive) |
-
-</div>
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -275,5 +259,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **All contributors** who helped make this project better
 
 ---
+
+## 📞 Support
+
+- **🐛 Bug Reports**: [GitHub Issues](https://github.com/yourusername/ai-study-assistant/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-study-assistant/discussions)
+- **📧 Email**: your.email@example.com
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you found it helpful!**
+
+Made with ❤️ by [Your Name](https://github.com/yourusername)
 
 </div>
