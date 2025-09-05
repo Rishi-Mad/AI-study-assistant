@@ -10,7 +10,7 @@
 
 **Transform your learning experience with AI-powered study tools**
 
-[🚀 Live Demo](#) • [📖 Documentation](#documentation) • [🛠️ Installation](#installation) • [🤝 Contributing](#contributing)
+[🚀 Live Demo](#) • [📖 Documentation](#documentation) • [🛠️ Installation](#installation)
 
 </div>
 
@@ -229,10 +229,6 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
 ### Development Setup
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -257,21 +253,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Tailwind CSS** for the beautiful styling framework
 - **Lucide React** for the beautiful icons
 - **All contributors** who helped make this project better
-
 ---
-
-## 📞 Support
-
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/yourusername/ai-study-assistant/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-study-assistant/discussions)
-- **📧 Email**: your.email@example.com
-
----
-
-<div align="center">
-
-**⭐ Star this repository if you found it helpful!**
-
-Made with ❤️ by [Your Name](https://github.com/yourusername)
-
-</div>
